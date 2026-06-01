@@ -1,0 +1,26 @@
+# dependencies
+node_modules
+
+# build output
+dist
+.output
+.nitro
+.tanstack
+
+# TanStack Router auto-generates this file on dev/build
+src/routeTree.gen.ts
+
+# env
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+npm-debug.log*
+
+# editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store

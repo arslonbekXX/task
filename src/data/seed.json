@@ -1,0 +1,92 @@
+[
+  {
+    "id": "seed-01",
+    "name": "Amir Temur xiyoboni",
+    "description": "Toshkent markazidagi tarixiy maydon va istirohat bog‘i.",
+    "status": "active",
+    "latitude": 41.3111,
+    "longitude": 69.2797,
+    "createdAt": "2025-01-12T08:30:00.000Z"
+  },
+  {
+    "id": "seed-02",
+    "name": "Chorsu bozori",
+    "description": "Eski shahardagi mashhur gumbazli bozor.",
+    "status": "active",
+    "latitude": 41.3265,
+    "longitude": 69.2349,
+    "createdAt": "2025-01-18T10:15:00.000Z"
+  },
+  {
+    "id": "seed-03",
+    "name": "Toshkent teleminorasi",
+    "description": "Markaziy Osiyodagi eng baland inshootlardan biri.",
+    "status": "active",
+    "latitude": 41.3479,
+    "longitude": 69.2895,
+    "createdAt": "2025-02-02T14:00:00.000Z"
+  },
+  {
+    "id": "seed-04",
+    "name": "Magic City park",
+    "description": "Oilaviy ko‘ngilochar majmua (vaqtincha yopiq).",
+    "status": "inactive",
+    "latitude": 41.2856,
+    "longitude": 69.2034,
+    "createdAt": "2025-02-20T09:45:00.000Z"
+  },
+  {
+    "id": "seed-05",
+    "name": "Hazrati Imom majmuasi",
+    "description": "Tarixiy diniy-me’moriy yodgorlik majmuasi.",
+    "status": "active",
+    "latitude": 41.3349,
+    "longitude": 69.237,
+    "createdAt": "2025-03-05T11:20:00.000Z"
+  },
+  {
+    "id": "seed-06",
+    "name": "Minor masjidi",
+    "description": "Oq marmar bilan qoplangan zamonaviy masjid.",
+    "status": "active",
+    "latitude": 41.3475,
+    "longitude": 69.2807,
+    "createdAt": "2025-03-22T16:10:00.000Z"
+  },
+  {
+    "id": "seed-07",
+    "name": "Registon, Samarqand",
+    "description": "Samarqanddagi mashhur uchta madrasa ansambli.",
+    "status": "active",
+    "latitude": 39.6542,
+    "longitude": 66.9758,
+    "createdAt": "2025-04-01T07:55:00.000Z"
+  },
+  {
+    "id": "seed-08",
+    "name": "Po‘yi Kalon, Buxoro",
+    "description": "Buxorodagi tarixiy minora va masjid majmuasi.",
+    "status": "inactive",
+    "latitude": 39.7757,
+    "longitude": 64.4143,
+    "createdAt": "2025-04-14T13:05:00.000Z"
+  },
+  {
+    "id": "seed-09",
+    "name": "Ichan Qal’a, Xiva",
+    "description": "Xivaning UNESCO ro‘yxatidagi ichki shahri.",
+    "status": "inactive",
+    "latitude": 41.3783,
+    "longitude": 60.3639,
+    "createdAt": "2025-05-03T12:40:00.000Z"
+  },
+  {
+    "id": "seed-10",
+    "name": "Tashkent City bog‘i",
+    "description": "Poytaxt markazidagi zamonaviy istirohat bog‘i.",
+    "status": "active",
+    "latitude": 41.3119,
+    "longitude": 69.266,
+    "createdAt": "2025-05-19T18:25:00.000Z"
+  }
+]
