@@ -8,12 +8,7 @@ export function ThemeToggle() {
   const isDark = theme === "dark";
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={toggleTheme}
-      aria-label={isDark ? "Yorug‘ rejimga o‘tish" : "Tungi rejimga o‘tish"}
-    >
+    <Button variant="outline" size="sm" onClick={toggleTheme}>
       {isDark ? <Sun /> : <Moon />}
     </Button>
   );

@@ -1,19 +1,19 @@
 # Mini Geo Dashboard
 
-Geo obyektlarni boshqarish uchun kichik, lekin to‘liq ishlaydigan full-stack dashboard. Obyektlarni qo‘shish, tahrirlash, o‘chirish, qidirish va ularni Yandex xaritasida marker sifatida ko‘rish mumkin. Barcha ma’lumotlar `localStorage`’da saqlanadi — sahifa yangilangandan keyin ham yo‘qolmaydi.
+Geo obyektlarni boshqarish uchun kichik, lekin to‘liq ishlaydigan full-stack dashboard. Obyektlarni qo‘shish, tahrirlash, o‘chirish, qidirish va ularni xaritada (Leaflet) marker sifatida ko‘rish mumkin. Barcha ma’lumotlar `localStorage`’da saqlanadi — sahifa yangilangandan keyin ham yo‘qolmaydi.
 
-![Texnologiyalar](https://img.shields.io/badge/TanStack_Start-React-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6) ![Zustand](https://img.shields.io/badge/State-Zustand-orange)
+![Texnologiyalar](https://img.shields.io/badge/TanStack_Start-React-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6) ![Zustand](https://img.shields.io/badge/State-Zustand-orange) ![Leaflet](https://img.shields.io/badge/Map-Leaflet-199900)
 
 ---
 
 ## ✨ Imkoniyatlar
 
-- **Dashboard statistikasi** — jami, aktiv, nofaol va poligon obyektlar soni (Zustand store’dan real vaqtda hisoblanadi).
-- **Obyekt qo‘shish formasi** — [TanStack Form](https://tanstack.com/form) + [Zod](https://zod.dev) validatsiyasi (field-level va form-level).
-- **Koordinatani xaritadan olish** — xaritaga bosilganda latitude/longitude avtomatik formaga yoziladi.
+- **Dashboard statistikasi** — jami, aktiv, nofaol obyektlar va poligonlar (nuqtaviy model bo‘lgani uchun har doim 0) soni, Zustand store’dan real vaqtda hisoblanadi.
+- **Obyekt qo‘shish** — jadval ustidagi **«Yangi obyekt»** tugmasi modal forma ochadi ([TanStack Form](https://tanstack.com/form) + [Zod](https://zod.dev) validatsiyasi, field-level va form-level).
+- **Koordinatani xaritadan tanlash** — formadagi **«Xaritadan tanlash»** tugmasi xarita dialogini ochadi; kerakli nuqtaga bosilganda latitude/longitude avtomatik formaga yoziladi (create va edit’da).
 - **Jadval** — qidiruv (300ms debounce), sahifalash (5 yoki 10 tadan), rangli status badge, tahrirlash (modal) va o‘chirish (tasdiqlash bilan).
-- **Yandex xaritasi** — har bir obyekt marker, marker bosilganda popup’da to‘liq ma’lumot.
-- **Dark mode** — Zustand theme store + Tailwind `dark` klassi (xarita ham mavzuga moslashadi).
+- **Leaflet xaritasi** — `react-leaflet` + CartoDB/OpenStreetMap plitalar (**API kalitsiz**); har bir obyekt marker, marker bosilganda popup’da to‘liq ma’lumot.
+- **Dark mode** — Zustand theme store + Tailwind `dark` klassi; xarita plitalari ham (light/dark) mavzuga moslashadi.
 - **Loading & error holatlar**, bo‘sh holat (“obyekt yo‘q”), responsive dizayn (mobil + desktop).
 
 ---
@@ -27,7 +27,7 @@ Geo obyektlarni boshqarish uchun kichik, lekin to‘liq ishlaydigan full-stack d
 | [Zustand](https://zustand.docs.pmnd.rs/) + `persist` | Global holat + `localStorage`’ga saqlash |
 | [TanStack Form](https://tanstack.com/form) | Forma holati va validatsiyasi |
 | [Zod](https://zod.dev) | Validatsiya sxemasi (Standard Schema orqali to‘g‘ridan-to‘g‘ri) |
-| [Yandex Maps JS API v3](https://yandex.com/maps-api/docs/js-api/index.html) | Xarita, markerlar va popuplar |
+| [Leaflet](https://leafletjs.com/) + [react-leaflet](https://react-leaflet.js.org/) | Xarita, markerlar va popuplar (CartoDB/OpenStreetMap plitalar — API kalitsiz) |
 | [shadcn/ui](https://ui.shadcn.com/) + [lucide-react](https://lucide.dev/) | Qayta ishlatiladigan UI komponentlari va ikonkalar |
 | [Tailwind CSS v4](https://tailwindcss.com/) | Styling + dark mode |
 
@@ -45,37 +45,15 @@ Geo obyektlarni boshqarish uchun kichik, lekin to‘liq ishlaydigan full-stack d
 bun install
 ```
 
-### 3. Yandex Maps API kalitini olish (bepul)
-
-Xarita ishlashi uchun Yandex Maps JS API kaliti kerak:
-
-1. [Yandex developer dashboard](https://developer.tech.yandex.ru/services/) saytiga kiring.
-2. **JavaScript API va Geocoder** xizmati uchun kalit yarating.
-3. Kalitni nusxalang.
-
-### 4. `.env` faylini sozlash
-
-`.env.example` faylidan nusxa oling va kalitni qo‘ying:
-
-```bash
-cp .env.example .env
-```
-
-```env
-# .env
-VITE_YANDEX_MAPS_API_KEY=siz_olgan_kalit
-```
-
-> ℹ️ Vite faqat `VITE_` bilan boshlanadigan o‘zgaruvchilarni brauzerga uzatadi.
-> Kalit bo‘lmasa, ilova ishlaydi, lekin xarita o‘rnida tushunarli xato xabari ko‘rsatiladi.
-
-### 5. Dev serverni ishga tushirish
+### 3. Dev serverni ishga tushirish
 
 ```bash
 bun run dev
 ```
 
 Brauzerda oching: **http://localhost:3000**
+
+> ℹ️ Xarita plitalari CartoDB (OpenStreetMap ma’lumotlari) dan olinadi — **API kalit yoki `.env` sozlamasi kerak emas**. Loyiha hech qanday muhit o‘zgaruvchisini talab qilmaydi.
 
 ---
 
@@ -106,8 +84,10 @@ src/
 │  │                       #   ilovaga xos wrapperlar (status-badge, spinner,
 │  │                       #   form-field, confirm-dialog, table-pagination)
 │  ├─ dashboard/           # stats-card, stats-grid
-│  ├─ objects/             # object-form, object-table, object-row, edit-object-modal
-│  ├─ map/                 # map-view (Yandex init + markerlar + popup)
+│  ├─ objects/             # object-form, object-table, object-row,
+│  │                       #   create-object-modal, edit-object-modal
+│  ├─ map/                 # map-view (SSR-safe wrapper), map-content
+│  │                       #   (Leaflet xaritasi), map-picker (koordinata dialogi)
 │  ├─ layout/              # header, theme-toggle
 │  └─ dashboard-view.tsx   # sahifani yig‘uvchi komponent
 ├─ store/                  # Zustand store’lar
@@ -118,7 +98,7 @@ src/
 ├─ data/
 │  └─ seed.json            # boshlang‘ich 10 ta obyekt
 └─ styles/
-   └─ app.css              # Tailwind v4 + shadcn theme tokenlari + dark variant
+   └─ app.css              # Tailwind v4 + shadcn theme tokenlari + Leaflet popup stillari
 ```
 
 > Forma validatsiyasi (Zod sxemasi) alohida fayl emas — `object-form.tsx` ichida joylashgan.
@@ -128,24 +108,35 @@ src/
 
 ## 🧠 Muhim texnik yechimlar
 
-### Yandex koordinata tartibi
+### Koordinata tartibi (Leaflet)
 
-Yandex Maps v3 hamma joyda **`[longitude, latitude]`** kutadi (Leaflet/Google’ning aksi).
-Ma’lumotda `latitude`/`longitude` alohida saqlanadi, ammo xaritaga uzatishda har doim teskari tartibda beriladi:
+Leaflet hamma joyda **`[latitude, longitude]`** tartibida ishlaydi. Ma’lumotda `latitude`/`longitude` alohida saqlanadi va to‘g‘ridan-to‘g‘ri uzatiladi:
 
-```ts
-new ymaps3.YMapMarker({ coordinates: [object.longitude, object.latitude] }, element)
+```tsx
+<Marker position={[object.latitude, object.longitude]} />
 ```
 
-Xaritaga bosilganda esa `YMapListener` event’i `[lng, lat]` qaytaradi va u formaga to‘g‘ri map qilinadi.
+Xaritaga bosilganda `useMapEvents` event’i `latlng` ni `{ lat, lng }` ko‘rinishida qaytaradi — qo‘shimcha almashtirish kerak emas.
 
-### Xarita to‘g‘ri boshqarilishi
+### SSR-xavfsiz xarita
 
-- Yandex Maps SDK faqat brauzerda ishlagani uchun runtime’da **`<script>` orqali** (`https://api-maps.yandex.ru/v3/...`) bir marta yuklanadi — SSR’ni buzmaydi.
-- Xarita `useEffect` ichida **bir marta** init qilinadi (`await ymaps3.ready`), hammasi `ref`’lar bilan boshqariladi (keraksiz re-render yo‘q).
-- Obyektlar ro‘yxati o‘zgarganda eski markerlar `map.removeChild(marker)` qilinib, yangidan chiziladi.
-- Komponent unmount bo‘lganda `map.destroy()` chaqiriladi.
-- Theme store o‘zgarganda `map.update({ theme })` orqali xarita dark/light mavzuga o‘tadi.
+Leaflet/react-leaflet import vaqtida `window`’ga murojaat qiladi, TanStack Start esa SSR qiladi — shuning uchun Leaflet faqat klientda yuklanishi shart:
+
+- `map-view.tsx` — yengil wrapper: `<ClientOnly>` (TanStack Router) + `React.lazy(() => import("./map-content"))` + `<Suspense>`. Server’da faqat loading placeholder render bo‘ladi, hydration toza qoladi.
+- `map-content.tsx` — barcha Leaflet kodi shu yerda (alohida client chunk). Server bundle’ga leaflet umuman tushmaydi.
+
+### Plitalar va dark mode
+
+Plitalar **CartoDB** (OpenStreetMap ma’lumotlari) dan — **API kalit kerak emas**. Theme o‘zgarganda `light_all` ↔ `dark_all` URL almashadi (`<TileLayer key={theme}>` orqali qayta yuklanadi). Popup esa theme tokenlari (`--popover`, `--border` va h.k.) bilan avtomatik moslashadi.
+
+### Markerlar va z-index
+
+- Markerlar `L.divIcon` orqali — rangli SVG pin (aktiv = yashil, nofaol = kulrang, tanlanayotgan nuqta = ko‘k).
+- Leaflet panel/boshqaruvlari juda yuqori z-index (1000 gacha) oladi. Xarita o‘ralasiga `isolation: isolate` qo‘yilgan — bu Leaflet z-indexlarini shu kontekstda “qamab”, portal qilingan oynalar (create/edit dialog, Select, toast) xarita ustida chiqishini ta’minlaydi.
+
+### Koordinatani xaritadan tanlash
+
+Create va edit formalaridagi **«Xaritadan tanlash»** tugmasi xarita bilan dialog ochadi (`map-picker.tsx`). Mavjud obyektlar kontekst uchun ko‘rsatiladi; xaritaga bosib nuqta tanlanadi (ko‘k marker), **«Tanlash»** bosilganda lat/lon formaga yoziladi. Dialog ichidagi xarita `ResizeObserver` + `map.invalidateSize()` bilan to‘g‘ri o‘lchamga keltiriladi.
 
 ### Zustand persist + SSR
 
@@ -160,11 +151,9 @@ TanStack Start odatiy holda Node server build qiladi (`.output/`).
 
 1. Repozitoriyani Netlify yoki Vercel’ga ulang.
 2. **Build command:** `bun run build`
-3. **Muhim:** hosting platformasining sozlamalarida **environment variable** sifatida `VITE_YANDEX_MAPS_API_KEY` ni qo‘shing (lokal `.env` fayli deploy’ga ketmaydi).
-   - Vercel: *Project → Settings → Environment Variables*
-   - Netlify: *Site settings → Environment variables*
-4. Qayta deploy qiling.
+3. Qayta deploy qiling.
 
+> Xarita API kalit talab qilmaydi, shuning uchun qo‘shimcha environment variable kerak emas.
 > Vercel uchun TanStack Start odatda avtomatik aniqlanadi. Netlify’da Node versiyasini 20+ ga sozlang.
 
 ---
