@@ -173,9 +173,3 @@ interface GeoObject {
   createdAt: string // ISO 8601
 }
 ```
-
----
-
-## 📝 Litsenziya
-
-Ushbu loyiha o‘quv maqsadida yaratilgan. Erkin foydalaning va kengaytiring.
